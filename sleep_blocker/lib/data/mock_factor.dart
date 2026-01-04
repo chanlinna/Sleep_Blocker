@@ -3,6 +3,7 @@ import 'package:sleep_blocker/models/factor_type.dart';
 
 final List<Factor> mockFactors = [
   Factor(
+    factorId: 'F1',
     type: FactorType.screen,
     name: "Screen Time",
     rotatingQuestions: [
@@ -12,6 +13,7 @@ final List<Factor> mockFactors = [
     ],
   ),
   Factor(
+    factorId: 'F2',
     type: FactorType.pain,
     name: "Pain / Discomfort",
     rotatingQuestions: [
@@ -21,6 +23,7 @@ final List<Factor> mockFactors = [
     ],
   ),
   Factor(
+    factorId: 'F3',
     type: FactorType.noise,
     name: "Ambient Noise",
     rotatingQuestions: [
@@ -30,6 +33,7 @@ final List<Factor> mockFactors = [
     ],
   ),
   Factor(
+    factorId: 'F4',
     type: FactorType.stress,
     name: "Stress / Anxiety",
     rotatingQuestions: [

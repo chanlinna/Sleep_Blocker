@@ -8,8 +8,9 @@ class SleepLog {
   final int qualityScore; 
 
   SleepLog({
+    String? id,
     required this.date,
     required this.duration,
     required this.qualityScore,
-  }) : id = uuid.v4();
+  }) : id = id ?? uuid.v4();
 }

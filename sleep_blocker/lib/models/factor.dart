@@ -10,8 +10,9 @@ class Factor {
   final List<String> rotatingQuestions; 
 
   Factor({
+    String? factorId,
     required this.type,
     required this.name,
     required this.rotatingQuestions,
-  }): factorId = uuid.v4();
+  }): factorId = factorId ??  uuid.v4();
 }
