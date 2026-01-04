@@ -20,8 +20,16 @@ class SleepHistoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeFactorTypes = _getActiveFactorTypes();
-    return Padding(
+    return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey.withValues(alpha:0.2),
+            width: 1,
+          ),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -43,17 +51,13 @@ class SleepHistoryTile extends StatelessWidget {
   }
 
   List<FactorType> _getActiveFactorTypes() {
-    return habitLogs
-        .where((log) =>
-            log.sleepLogId == sleepLog.id && log.value > 0)
-        .map((log) {
-          final factor = factors.firstWhere(
-            (f) => f.factorId == log.factorId,
-          );
-          return factor.type;
-        })
-        .toSet()
-        .toList();
+    return habitLogs.where((log) => log.value > 0).map((log) {
+      final factor = factors.firstWhere(
+        (f) => f.factorId == log.factorId,
+      );
+      return factor.type;
+    })
+    .toSet().toList();
   }
 
   String _formatDate(DateTime date) {
