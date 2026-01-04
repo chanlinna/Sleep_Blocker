@@ -38,7 +38,7 @@ class SleepHistoryItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            sleepLog.duration.toString(),
+            _formatDuration(sleepLog.duration),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -83,4 +83,12 @@ class SleepHistoryItem extends StatelessWidget {
   String _formatDate(DateTime date) {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
+
+  String _formatDuration(double hours) {
+    final int h = hours.floor();
+    final int m = ((hours - h) * 60).round();
+
+    return '${h}h ${m}mn';
+  }
+
 }

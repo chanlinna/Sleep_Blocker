@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_blocker/data/mock_factor.dart';
 import 'package:sleep_blocker/data/mock_habit_log.dart';
 import 'package:sleep_blocker/data/mock_sleep_log.dart';
+import 'package:sleep_blocker/ui/widgets/sleep_history_item.dart';
 import 'package:sleep_blocker/ui/widgets/sleep_history_tile.dart';
 
 class InsightScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class InsightScreen extends StatelessWidget {
                     .where((h) => h.sleepLogId == sleepLog.id)
                     .toList();
             
-                return SleepHistoryTile(
+                return SleepHistoryItem(
                   sleepLog: sleepLog,
                   habitLogs: habitLogsForNight,
                   factors: mockFactors,
