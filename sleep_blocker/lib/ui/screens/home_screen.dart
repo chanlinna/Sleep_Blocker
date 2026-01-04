@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
             child: Text("Home screen"),
           ),
           QuestionTile(question: 'adsjha', options: [AnswerOption(text: 'Yes', selectedBgColor: Color(0xFFF87171), selectedTextColor: Color(0xFFFFFFFF)), AnswerOption(text: 'No', selectedBgColor: Color(0xFF2DD4BF), selectedTextColor: Color(0xFF000000))], factor: FactorType.pain),
+          const SizedBox(height: 20),
           AppButton('Test'),
         ],
       ),

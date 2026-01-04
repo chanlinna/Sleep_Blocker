@@ -23,6 +23,7 @@ class AppButton extends StatelessWidget {
               horizontal: 70,
             ),
         )),
+        const SizedBox(height: 5),
         Text('Your data is saved offline', style: Theme.of(context).textTheme.bodySmall),
       ],
     );
