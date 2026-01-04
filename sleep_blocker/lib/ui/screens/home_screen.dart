@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:sleep_blocker/data/mock_habit_log.dart';
+import 'package:sleep_blocker/data/mock_sleep_log.dart';
+import 'package:sleep_blocker/models/factor_type.dart';
+import 'package:sleep_blocker/ui/widgets/app_button.dart';
+import 'package:sleep_blocker/ui/widgets/question_tile.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Center(
+            child: Text("Home screen"),
+          ),
+          QuestionTile(question: 'adsjha', options: [AnswerOption(text: 'Yes', selectedBgColor: Color(0xFFF87171), selectedTextColor: Color(0xFFFFFFFF)), AnswerOption(text: 'No', selectedBgColor: Color(0xFF2DD4BF), selectedTextColor: Color(0xFF000000))], factor: FactorType.pain),
+          AppButton('Test'),
+        ],
+      ),
+    );
+  
+  }
+} 
