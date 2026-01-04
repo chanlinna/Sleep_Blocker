@@ -12,14 +12,19 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-        label: Text(label, style: Theme.of(context).textTheme.headlineMedium),
-        onPressed: (){},
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 50,
-          ),
-        ));
+    return Column(
+      children: [
+        ElevatedButton.icon(
+          label: Text(label, style: Theme.of(context).textTheme.headlineMedium),
+          onPressed: (){},
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 70,
+            ),
+        )),
+        Text('Your data is saved offline', style: Theme.of(context).textTheme.bodySmall),
+      ],
+    );
   }
 }

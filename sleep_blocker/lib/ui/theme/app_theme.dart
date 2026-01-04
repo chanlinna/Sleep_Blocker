@@ -28,6 +28,7 @@ class AppTheme {
       headlineMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
       bodyLarge: TextStyle(fontSize: 16, color: textPrimary),
       bodyMedium: TextStyle(fontSize: 14, color: textSecondary),
+      bodySmall: TextStyle(fontSize: 12, color: Color(0xFFA8A3A3))
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

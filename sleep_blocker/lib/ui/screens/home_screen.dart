@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sleep_blocker/data/mock_habit_log.dart';
-import 'package:sleep_blocker/data/mock_sleep_log.dart';
 import 'package:sleep_blocker/models/factor_type.dart';
 import 'package:sleep_blocker/ui/widgets/app_button.dart';
 import 'package:sleep_blocker/ui/widgets/question_tile.dart';
