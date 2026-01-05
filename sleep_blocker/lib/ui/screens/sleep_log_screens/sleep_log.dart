@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../../models/sleep_log.dart';
-import 'habitLog.dart';
+import 'habit_log.dart';
 import '../../widgets/calendar.dart';
-import '../../widgets/sleepInput.dart';
+import '../../widgets/sleep_input.dart';
 import '../../widgets/app_button.dart';
 
 class SleepLogScreen extends StatefulWidget {

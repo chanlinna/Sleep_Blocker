@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_blocker/models/factor_type.dart';
 import 'package:sleep_blocker/ui/widgets/app_button.dart';
 import 'package:sleep_blocker/ui/widgets/question_tile.dart';
-import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleepLog.dart';
+import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleep_log.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
