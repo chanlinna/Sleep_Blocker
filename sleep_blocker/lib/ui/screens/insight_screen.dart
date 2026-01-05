@@ -6,7 +6,6 @@ import 'package:sleep_blocker/logic/sleep_blocker_analyzer.dart';
 import 'package:sleep_blocker/ui/helpers/blocker_text.dart';
 import 'package:sleep_blocker/ui/widgets/info_tile.dart';
 import 'package:sleep_blocker/ui/widgets/sleep_history_item.dart';
-import 'package:sleep_blocker/ui/widgets/sleep_history_tile.dart';
 
 class InsightScreen extends StatelessWidget {
   const InsightScreen({super.key});
