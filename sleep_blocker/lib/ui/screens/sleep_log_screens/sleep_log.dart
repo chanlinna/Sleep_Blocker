@@ -67,24 +67,22 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
                       selectedDate = date;
                       qualityScore = null; 
                       duration = 6.0; 
-                      isEditing = false;
                     });
                   }
                 ),
 
               const SizedBox(height: 20),
-              if (isDateLogged && !isEditing)
+              if (isDateLogged)
                 SuccessWidget(
                   onReLog: () {
-                    final existingLog = LogService.sleepHistory.firstWhere(
-                      (log) => isSameDate(log.date, selectedDate)
-                    );
-
-                    setState(() {
-                      duration = existingLog.duration;
-                      qualityScore = existingLog.qualityScore;
-                      isEditing = true;
-                    });
+                   // remove the existing log for now
+                   setState(() {
+                     LogService.sleepHistory.removeWhere((log) => 
+                       log.date.day == selectedDate.day &&
+                       log.date.month == selectedDate.month &&
+                       log.date.year == selectedDate.year
+                     );
+                   });
                  },
                 ) 
               else ...[
