@@ -4,7 +4,7 @@ import '../../../models/sleep_log.dart';
 import 'habitLog.dart';
 import '../../widgets/calendar.dart';
 import '../../widgets/sleepInput.dart';
-import '../../widgets/NextButton.dart';
+import '../../widgets/app_button.dart';
 
 class SleepLogScreen extends StatefulWidget {
   const SleepLogScreen({super.key});
@@ -58,8 +58,11 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
 
               const SizedBox(height: 20),
 
-              NextButton(
-                onPressed: qualityScore == null ? null : _handleNext,
+              AppButton(
+                "Next",
+                onTap: qualityScore == null 
+                  ? null 
+                  : () => _handleNext(),
               ),
             ],
           ),
