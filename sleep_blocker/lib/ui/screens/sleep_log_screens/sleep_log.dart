@@ -5,6 +5,8 @@ import 'habit_log.dart';
 import '../../widgets/calendar.dart';
 import '../../widgets/sleep_input.dart';
 import '../../widgets/app_button.dart';
+import '../../../logic/log_service.dart';
+import '../../widgets/success.dart';
 
 class SleepLogScreen extends StatefulWidget {
   const SleepLogScreen({super.key});
@@ -33,6 +35,12 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
     );
   }
 
+  bool get isDateLogged {
+    return LogService.sleepHistory.any((log) =>
+        log.date.year == selectedDate.year &&
+        log.date.month == selectedDate.month &&
+        log.date.day == selectedDate.day);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,29 +49,48 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
         child: SingleChildScrollView( // Prevents crashing if the screen is small
           child: Column(
             children: [
-
               SleepCalendarHeader(
-                selectedDate: selectedDate,
-                onDateSelected: (date) => setState(() => selectedDate = date),
-              ),
+                  selectedDate: selectedDate,
+                  onDateSelected: (date){
+                    setState(() {
+                      selectedDate = date;
+                      qualityScore = null; 
+                      duration = 6.0; 
+                    });
+                  }
+                ),
 
               const SizedBox(height: 20),
+              if (isDateLogged)
+                SuccessWidget(
+                  onReLog: () {
+                   // remove the existing log for now
+                   setState(() {
+                     LogService.sleepHistory.removeWhere((log) => 
+                       log.date.day == selectedDate.day &&
+                       log.date.month == selectedDate.month &&
+                       log.date.year == selectedDate.year
+                     );
+                   });
+                 },
+                ) 
+              else ...[
+                SleepInputWidget(
+                  duration: duration,
+                  qualityScore: qualityScore,
+                  onQualitySelected: (score) => setState(() => qualityScore = score),
+                  onDurationChanged: (val) => setState(() => duration = val),
+                ),
 
-              SleepInputWidget(
-                duration: duration,
-                qualityScore: qualityScore,
-                onQualitySelected: (score) => setState(() => qualityScore = score),
-                onDurationChanged: (val) => setState(() => duration = val),
-              ),
+                const SizedBox(height: 20),
 
-              const SizedBox(height: 20),
-
-              AppButton(
-                "Next",
-                onTap: qualityScore == null 
-                  ? null 
-                  : () => _handleNext(),
-              ),
+                AppButton(
+                  "Next",
+                  onTap: qualityScore == null 
+                    ? null 
+                    : () => _handleNext(),
+                ),
+              ]
             ],
           ),
         ),
@@ -73,3 +100,4 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
 
 
 }
+
