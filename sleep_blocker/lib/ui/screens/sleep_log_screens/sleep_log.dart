@@ -19,6 +19,7 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
   DateTime selectedDate = DateTime.now();
   double duration = 6.0;
   int? qualityScore;
+  bool isEditing = false;
 
   void _handleNext() {
     final currentNight = SleepLog(
@@ -27,6 +28,16 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
       qualityScore: qualityScore!,
     );
 
+    // actually changed ?
+    final existingLog = LogService.sleepHistory.firstWhere(
+      (log) => isSameDate(log.date, selectedDate),
+      orElse: () => null as dynamic,
+    );
+
+    if (existingLog != null && existingLog.duration == duration && existingLog.qualityScore == qualityScore) {
+      setState(() => isEditing = false); 
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -56,22 +67,24 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
                       selectedDate = date;
                       qualityScore = null; 
                       duration = 6.0; 
+                      isEditing = false;
                     });
                   }
                 ),
 
               const SizedBox(height: 20),
-              if (isDateLogged)
+              if (isDateLogged && !isEditing)
                 SuccessWidget(
                   onReLog: () {
-                   // remove the existing log for now
-                   setState(() {
-                     LogService.sleepHistory.removeWhere((log) => 
-                       log.date.day == selectedDate.day &&
-                       log.date.month == selectedDate.month &&
-                       log.date.year == selectedDate.year
-                     );
-                   });
+                    final existingLog = LogService.sleepHistory.firstWhere(
+                      (log) => isSameDate(log.date, selectedDate)
+                    );
+
+                    setState(() {
+                      duration = existingLog.duration;
+                      qualityScore = existingLog.qualityScore;
+                      isEditing = true;
+                    });
                  },
                 ) 
               else ...[
@@ -98,6 +111,10 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
     );
   }
 
-
+bool isSameDate(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+         date1.month == date2.month &&
+         date1.day == date2.day;
+}
 }
 
