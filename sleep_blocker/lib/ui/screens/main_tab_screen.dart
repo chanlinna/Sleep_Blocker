@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_blocker/ui/screens/home_screen.dart';
 import 'package:sleep_blocker/ui/screens/insight_screen.dart';
-import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleep_log_step1.dart';
+import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleepLog.dart';
 import 'package:sleep_blocker/ui/theme/app_theme.dart';
 
 class MainTabScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _MainTabScreenState extends State<MainTabScreen> {
         index: _currentTabIndex,
         children: [
           HomeScreen(),
-          SleepLogStep1(),
+          SleepLogScreen(),
           InsightScreen()
         ],
       ),
