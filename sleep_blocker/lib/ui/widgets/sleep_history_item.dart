@@ -32,7 +32,7 @@ class SleepHistoryItem extends StatelessWidget {
         contentPadding: const EdgeInsets.all(10),
 
         trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: const Color(0xFF3DE0C5),
             borderRadius: BorderRadius.circular(20),

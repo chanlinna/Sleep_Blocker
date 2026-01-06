@@ -1,6 +1,11 @@
 import '../../logic/sleep_blocker_analyzer.dart';
 import '../../models/factor_type.dart';
 
+BlockerResult? _primary(BlockerAnalysisResult result) {
+  if (result.blockers.isEmpty) return null;
+  return result.blockers.first;
+}
+
 String blockerTitle(BlockerAnalysisResult result) {
   switch (result.status) {
     case BlockerStatus.notEnoughData:
@@ -19,16 +24,19 @@ String blockerDescription(BlockerAnalysisResult result) {
     case BlockerStatus.noBlockerDetected:
       return "No strong sleep blockers were detected in the last 7 nights.";
     case BlockerStatus.success:
-      return result.blocker!.factor.name;
+      final blocker = _primary(result);
+      return blocker!.factor.name;
   }
 }
 
 String adviceText(BlockerAnalysisResult result) {
-  if (result.status != BlockerStatus.success) {
+  final blocker = _primary(result);
+
+  if (blocker == null) {
     return "Keep logging your sleep to receive personalized advice.";
   }
 
-  switch (result.blocker!.factor.type) {
+  switch (blocker.factor.type) {
     case FactorType.screen:
       return "Try putting your phone away 30 minutes before bed.";
     case FactorType.pain:
@@ -41,12 +49,13 @@ String adviceText(BlockerAnalysisResult result) {
 }
 
 String insightText(BlockerAnalysisResult result) {
-  if (result.status != BlockerStatus.success) {
+  final blocker = _primary(result);
+  if (blocker == null) {
     return "We'll show insights once enough sleep data is collected.";
   }
 
-  final impact = result.blocker!.impact.abs().toStringAsFixed(1);
-  final factor = result.blocker!.factor.name;
+  final impact = blocker.impact.abs().toStringAsFixed(1);
+  final factor = blocker.factor.name;
 
   return "$factor reduced your sleep quality by $impact points "
       "on average over the last 7 nights.";

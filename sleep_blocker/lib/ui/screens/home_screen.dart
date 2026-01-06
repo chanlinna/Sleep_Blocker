@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_blocker/data/mock_factor.dart';
 import 'package:sleep_blocker/data/mock_habit_log.dart';
 import 'package:sleep_blocker/data/mock_sleep_log.dart';
+import 'package:sleep_blocker/logic/calculate_sleep_health.dart';
 import 'package:sleep_blocker/logic/sleep_blocker_analyzer.dart';
 import 'package:sleep_blocker/models/factor_type.dart';
 import 'package:sleep_blocker/ui/helpers/blocker_text.dart';
@@ -10,6 +11,7 @@ import 'package:sleep_blocker/ui/widgets/app_button.dart';
 import 'package:sleep_blocker/ui/widgets/info_tile.dart';
 import 'package:sleep_blocker/ui/widgets/question_tile.dart';
 import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleep_log.dart';
+import 'package:sleep_blocker/ui/widgets/sleep_health.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,6 +23,10 @@ class HomeScreen extends StatelessWidget {
       habitLogs: mockHabitLogs,
       factors: mockFactors
     );
+
+    final avgDurationHours = SleepHealthCalculator.averageDurationHours(mockSleepLogs);
+    final avgQuality = SleepHealthCalculator.averageQuality(mockSleepLogs);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -53,12 +59,13 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  InfoTile(title: blockerTitle(result!), desc: blockerDescription(result), infoType: InfoType.blocker),
+                  InfoTile(title: blockerTitle(result), desc: blockerDescription(result), infoType: InfoType.blocker),
                   const SizedBox(height: 40,),
                   InfoTile(title: "Personalized Advice", desc: adviceText(result), infoType: InfoType.advice),
                 ]
               ),
             ),
+            SleepHealth(avgDurationHours: avgDurationHours, avgQuality: avgQuality)
           ],
         ),
       ),
