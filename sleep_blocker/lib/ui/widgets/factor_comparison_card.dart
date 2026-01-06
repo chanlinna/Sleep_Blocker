@@ -16,8 +16,6 @@ ComparisonStyle comparisonStyleFor(FactorType type) {
   }
 }
 
-/// FactorComparisonCard
-/// Shows avg quality for each factor level, visual bar, and impact
 class FactorComparisonCard extends StatelessWidget {
   final BlockerResult result;
 
@@ -31,14 +29,13 @@ class FactorComparisonCard extends StatelessWidget {
     final factor = result.factor;
     final style = comparisonStyleFor(factor.type);
 
-    // Compute averages for display
     final averages = _computeAverages(result, style);
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,27 +43,25 @@ class FactorComparisonCard extends StatelessWidget {
           Text(factor.name, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 12),
 
-          // Display levels
           for (final level in averages.keys)
             _buildLevelBar(context, level, averages[level]!),
 
           const SizedBox(height: 10),
           Text(
-            "Impact −${result.impact.abs().toStringAsFixed(1)}",
-            style: const TextStyle(color: Colors.redAccent),
+            "Impact -${result.impact.abs().toStringAsFixed(1)}",
+            style: const TextStyle(color: AppTheme.highRiskColor),
           ),
         ],
       ),
     );
   }
 
-  /// Builds a horizontal bar for each factor level
   Widget _buildLevelBar(BuildContext context, String label, double avgQuality) {
     final barColor = avgQuality <= 2.5
-        ? Colors.redAccent
+        ? AppTheme.highRiskColor
         : avgQuality <= 4.0
-            ? Colors.orangeAccent
-            : Colors.green;
+            ? Color(0xFFFACC15)
+            : AppTheme.primaryColor;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -85,9 +80,9 @@ class FactorComparisonCard extends StatelessWidget {
                   ),
                 ),
                 FractionallySizedBox(
-                  widthFactor: avgQuality / 5, // max quality = 5
+                  widthFactor: avgQuality / 5, 
                   child: Container(
-                    height: 20,
+                    height: 10,
                     decoration: BoxDecoration(
                       color: barColor,
                       borderRadius: BorderRadius.circular(10),
@@ -104,18 +99,15 @@ class FactorComparisonCard extends StatelessWidget {
     );
   }
 
-  /// Compute averages per factor level
   Map<String, double> _computeAverages(BlockerResult result, ComparisonStyle style) {
     final averages = <String, double>{};
 
     switch (style) {
       case ComparisonStyle.binary:
-        // Yes / No averages
         averages['Yes'] = result.yesAvg;
         averages['No'] = result.noAvg;
         break;
       case ComparisonStyle.ordinal:
-        // High / Medium / Low averages
         averages['Low'] = result.lowAvg;
         averages['Medium'] = result.mediumAvg;
         averages['High'] = result.highAvg;

@@ -17,7 +17,6 @@ class _MainTabScreenState extends State<MainTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sleep Blocker')),
       body: IndexedStack(
         index: _currentTabIndex,
         children: [
