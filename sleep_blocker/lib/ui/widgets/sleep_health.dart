@@ -20,9 +20,7 @@ class SleepHealth extends StatelessWidget {
       avgQuality: avgQuality,
     ); 
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
+    return Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,8 +83,7 @@ class SleepHealth extends StatelessWidget {
             }),
           ),
         ],
-      ),
-    );
+      );
   }
 
   IconData _iconForIndex(int index) {
