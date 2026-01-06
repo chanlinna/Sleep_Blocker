@@ -13,4 +13,18 @@ class SleepLog {
     required this.duration,
     required this.qualityScore,
   }) : id = id ?? uuid.v4();
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'date': date.toIso8601String(), 
+    'duration': duration,
+    'qualityScore': qualityScore,
+  };
+
+  factory SleepLog.fromJson(Map<String, dynamic> json) => SleepLog(
+    id: json['id'],
+    date: DateTime.parse(json['date']),
+    duration: json['duration'],
+    qualityScore: json['qualityScore'],
+  );
 }
