@@ -43,7 +43,11 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
       MaterialPageRoute(
         builder: (context) => HabitLogScreen(sleepRecord: currentNight),
       ),
-    );
+    ).then((_) {
+    setState(() {
+      isEditing = false; 
+    });
+  });
   }
 
   bool get isDateLogged {
