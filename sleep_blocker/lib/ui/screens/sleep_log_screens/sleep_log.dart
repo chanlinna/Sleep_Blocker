@@ -29,15 +29,15 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
     );
 
     // actually changed ?
-    final existingLog = LogService.sleepHistory.firstWhere(
-      (log) => isSameDate(log.date, selectedDate),
-      orElse: () => null as dynamic,
-    );
+    // final existingLog = LogService.sleepHistory.firstWhere(
+    //   (log) => isSameDate(log.date, selectedDate),
+    //   orElse: () => null as dynamic,
+    // );
 
-    if (existingLog != null && existingLog.duration == duration && existingLog.qualityScore == qualityScore) {
-      setState(() => isEditing = false); 
-      return;
-    }
+    // if (existingLog != null && existingLog.duration == duration && existingLog.qualityScore == qualityScore) {
+    //   setState(() => isEditing = false); 
+    //   return;
+    // }
     Navigator.push(
       context,
       MaterialPageRoute(

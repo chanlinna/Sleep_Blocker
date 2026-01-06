@@ -22,43 +22,45 @@ class HomeScreen extends StatelessWidget {
       factors: mockFactors
     );
     return Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: Text("Home screen"),
-          ),
-          QuestionTile(question: 'adsjha', options: [AnswerOption(text: 'Yes', selectedBgColor: Color(0xFFF87171), selectedTextColor: Color(0xFFFFFFFF)), AnswerOption(text: 'No', selectedBgColor: Color(0xFF2DD4BF), selectedTextColor: Color(0xFF000000))], factor: FactorType.pain),
-          const SizedBox(height: 20),
-          AppButton(
-            "Log Sleep Here",
-            width: 250,
-            onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SleepLogScreen(),
-                ),
-              );
-            }
-          ),
-          AppButton('Test', onTap: (){},),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              color: AppTheme.surfaceColor,
-              borderRadius: BorderRadius.circular(15)
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: Text("Home screen"),
             ),
-            child: Column(
-              children: [
-                InfoTile(title: blockerTitle(result!), desc: blockerDescription(result), infoType: InfoType.blocker),
-                const SizedBox(height: 40,),
-                InfoTile(title: "Personalized Advice", desc: adviceText(result), infoType: InfoType.advice),
-              ]
+            QuestionTile(question: 'adsjha', options: [AnswerOption(text: 'Yes', selectedBgColor: Color(0xFFF87171), selectedTextColor: Color(0xFFFFFFFF)), AnswerOption(text: 'No', selectedBgColor: Color(0xFF2DD4BF), selectedTextColor: Color(0xFF000000))], factor: FactorType.pain),
+            const SizedBox(height: 20),
+            AppButton(
+              "Log Sleep Here",
+              width: 250,
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SleepLogScreen(),
+                  ),
+                );
+              }
             ),
-          ),
-        ],
+            AppButton('Test', onTap: (){},),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceColor,
+                borderRadius: BorderRadius.circular(15)
+              ),
+              child: Column(
+                children: [
+                  InfoTile(title: blockerTitle(result!), desc: blockerDescription(result), infoType: InfoType.blocker),
+                  const SizedBox(height: 40,),
+                  InfoTile(title: "Personalized Advice", desc: adviceText(result), infoType: InfoType.advice),
+                ]
+              ),
+            ),
+          ],
+        ),
       ),
     );
   
