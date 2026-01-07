@@ -27,17 +27,6 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
       duration: duration,
       qualityScore: qualityScore!,
     );
-
-    // actually changed ?
-    // final existingLog = LogService.sleepHistory.firstWhere(
-    //   (log) => isSameDate(log.date, selectedDate),
-    //   orElse: () => null as dynamic,
-    // );
-
-    // if (existingLog != null && existingLog.duration == duration && existingLog.qualityScore == qualityScore) {
-    //   setState(() => isEditing = false); 
-    //   return;
-    // }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -60,8 +49,11 @@ class _SleepLogScreenState extends State<SleepLogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.darkTheme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text('Sleep Log'),
+      ),
       body: SafeArea(
-        child: SingleChildScrollView( // Prevents crashing if the screen is small
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SleepCalendarHeader(

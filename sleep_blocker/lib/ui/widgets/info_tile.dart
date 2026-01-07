@@ -4,17 +4,19 @@ class InfoTile extends StatelessWidget{
   final String title;
   final String desc;
   final InfoType infoType;
+  final VoidCallback? onTap;
 
   const InfoTile({
     super.key,
     required this.title,
     required this.desc,
-    required this.infoType
+    required this.infoType,
+    this.onTap
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final content = Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -43,6 +45,13 @@ class InfoTile extends StatelessWidget{
           ),
         )
       ],
+    );
+    if (onTap == null) return content;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
+      child: content,
     );
   }
 }

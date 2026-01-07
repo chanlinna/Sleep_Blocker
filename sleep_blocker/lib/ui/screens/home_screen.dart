@@ -8,12 +8,13 @@ import 'package:sleep_blocker/ui/helpers/blocker_text.dart';
 import 'package:sleep_blocker/ui/theme/app_theme.dart';
 import 'package:sleep_blocker/ui/widgets/app_button.dart';
 import 'package:sleep_blocker/ui/widgets/info_tile.dart';
-import 'package:sleep_blocker/ui/screens/sleep_log_screens/sleep_log.dart';
-import 'package:sleep_blocker/ui/widgets/section_title.dart';
 import 'package:sleep_blocker/ui/widgets/sleep_health.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.onLogSleepTap, required this.onViewInsightsTap});
+
+  final VoidCallback onLogSleepTap;
+  final VoidCallback onViewInsightsTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,6 @@ class HomeScreen extends StatelessWidget {
           children: [
             SizedBox(height: 30,),
             Text('Welcome to Sleep Blocker!', style: Theme.of(context).textTheme.headlineMedium),
-            //const SizedBox(height: 8),
             if (lastSleep != null)
               Text(
                 "You slept ${lastSleep.duration.toStringAsFixed(1)} hours last night",
@@ -55,9 +55,9 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  InfoTile(title: blockerTitle(result), desc: blockerDescription(result), infoType: InfoType.blocker),
+                  InfoTile(title: blockerTitle(result), desc: blockerDescription(result), infoType: InfoType.blocker, onTap: onViewInsightsTap,),
                   const SizedBox(height: 40,),
-                  InfoTile(title: "Personalized Advice", desc: adviceText(result), infoType: InfoType.advice),
+                  InfoTile(title: "Personalized Advice", desc: adviceText(result), infoType: InfoType.advice, onTap: onViewInsightsTap,),
                 ]
               ),
             ),
@@ -79,15 +79,8 @@ class HomeScreen extends StatelessWidget {
             SleepHealth(avgDurationHours: avgDurationHours, avgQuality: avgQuality),
             const SizedBox(height: 20,),
             AppButton(
-              "Log Sleep Here",
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SleepLogScreen(),
-                  ),
-                );
-              }
+              "Log Sleep Now",
+              onTap: onLogSleepTap
             ),
           ],
         ),

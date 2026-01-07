@@ -14,13 +14,19 @@ class MainTabScreen extends StatefulWidget {
 class _MainTabScreenState extends State<MainTabScreen> {
   int _currentTabIndex = 0;
 
+  void switchToTab(int index) {
+    setState(() {
+      _currentTabIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
         index: _currentTabIndex,
         children: [
-          HomeScreen(),
+          HomeScreen(onLogSleepTap: () => switchToTab(1), onViewInsightsTap: () => switchToTab(2),),
           SleepLogScreen(),
           InsightScreen()
         ],
@@ -29,11 +35,7 @@ class _MainTabScreenState extends State<MainTabScreen> {
         backgroundColor: AppTheme.surfaceColor,
         selectedItemColor: AppTheme.primaryColor,
         currentIndex: _currentTabIndex,
-        onTap: (index) {
-          setState(() {
-            _currentTabIndex = index;
-          });
-        },
+        onTap: switchToTab,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
