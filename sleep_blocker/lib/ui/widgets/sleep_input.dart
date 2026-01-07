@@ -32,19 +32,25 @@ class SleepInputWidget extends StatelessWidget {
                     const Text("How was your sleep?", style: TextStyle(color: Colors.white, fontSize: 16)),
                     const SizedBox(height: 15),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildEmoji(1, Icons.sentiment_very_dissatisfied),
-                        _buildEmoji(2, Icons.sentiment_dissatisfied),
-                        _buildEmoji(3, Icons.sentiment_neutral),
-                        _buildEmoji(4, Icons.sentiment_satisfied),
-                        _buildEmoji(5, Icons.sentiment_very_satisfied),
-                      ],
+                      children: List.generate(5, (index) {
+                        final score = index + 1;
+                        return Expanded(
+                          child: IconButton(
+                            icon: Icon(
+                              _emojiIcon(score),
+                              size: 40,
+                              color: qualityScore == score
+                                  ? AppTheme.primaryColor
+                                  : Colors.grey,
+                            ),
+                            onPressed: () => onQualitySelected(score),
+                          ),
+                        );
+                      }),
                     ),
-
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Divider(color: Colors.white10), // Separator line
+                      child: Divider(color: Colors.white10), 
                     ),
 
                     //duration
@@ -88,13 +94,25 @@ class SleepInputWidget extends StatelessWidget {
       ],
     );
   }
-  // Helper method for the emojis
-  Widget _buildEmoji(int score, IconData icon) {
-    return IconButton(
-      icon: Icon(icon, size: 40,
-          color: qualityScore == score ? AppTheme.primaryColor : Colors.grey),
-      onPressed: () => onQualitySelected(score)
-    );
+  // // Helper method for the emojis
+  // Widget _buildEmoji(int score, IconData icon) {
+  //   return IconButton(
+  //     icon: Icon(icon, size: 40,
+  //         color: qualityScore == score ? AppTheme.primaryColor : Colors.grey),
+  //     onPressed: () => onQualitySelected(score)
+  //   );
+  // }
+
+  IconData _emojiIcon(int score) {
+    switch (score) {
+      case 1: return Icons.sentiment_very_dissatisfied;
+      case 2: return Icons.sentiment_dissatisfied;
+      case 3: return Icons.sentiment_neutral;
+      case 4: return Icons.sentiment_satisfied;
+      case 5: return Icons.sentiment_very_satisfied;
+      default: return Icons.sentiment_neutral;
+    }
   }
+
 }
   

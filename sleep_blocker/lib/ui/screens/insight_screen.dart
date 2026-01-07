@@ -65,18 +65,21 @@ class _InsightScreenState extends State<InsightScreen> {
                 curve: Curves.easeInOut,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final cardWidth = (constraints.maxWidth - 12) / 2;
                 
                     return Wrap(
                       spacing: 12,
                       runSpacing: 12,
                       children: visibleBlockers.map((blocker) {
-                        return SizedBox(
-                          width: cardWidth,
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: 150,
+                            maxWidth: 180, 
+                          ),
                           child: FactorComparisonCard(result: blocker),
                         );
                       }).toList(),
                     );
+
                   },
                 ),
               ),

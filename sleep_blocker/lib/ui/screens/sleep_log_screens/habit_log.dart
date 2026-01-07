@@ -71,7 +71,6 @@ class _HabitLogScreenState extends State<HabitLogScreen> {
                       ),
                     ),
                   ),
-                  // Spread the factors into the column
                   ...mockFactors.map((factor) => FactorTile(
                     factor: factor,
                     displayQuestion: _chosenQuestions[factor.factorId] ?? factor.name,
