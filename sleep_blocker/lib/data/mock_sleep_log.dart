@@ -5,13 +5,13 @@ final List<SleepLog> mockSleepLogs = [
     id: 'S1',
     date: DateTime(2026, 1, 1),
     duration: 6.0,
-    qualityScore: 3,
+    qualityScore: 2, // low quality → weighted factors matter
   ),
   SleepLog(
     id: 'S2',
     date: DateTime(2026, 1, 2),
     duration: 7.5,
-    qualityScore: 4,
+    qualityScore: 4, // high quality → contrast with bad habits
   ),
   SleepLog(
     id: 'S3',
@@ -29,13 +29,13 @@ final List<SleepLog> mockSleepLogs = [
     id: 'S5',
     date: DateTime(2026, 1, 5),
     duration: 8.0,
-    qualityScore: 4,
+    qualityScore: 5,
   ),
   SleepLog(
     id: 'S6',
     date: DateTime(2026, 1, 6),
     duration: 4.8,
-    qualityScore: 2,
+    qualityScore: 1, // really low → emphasizes impact of noise/stress
   ),
   SleepLog(
     id: 'S7',

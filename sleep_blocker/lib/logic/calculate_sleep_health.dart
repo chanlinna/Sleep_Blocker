@@ -6,34 +6,33 @@ class SleepHealthCalculator {
   static const int windowDays = 7;
 
   static double averageDurationHours(List<SleepLog> logs) {
-    final recent = _last7(logs);
-    if (recent.isEmpty) return 0;
+    final recentLogs = _last7(logs);
+    if (recentLogs.isEmpty) return 0;
 
-    final total = recent.fold<double>(
-      0,
-      (sum, log) => sum + log.duration,
-    );
+    double total = 0;
+    for (final log in recentLogs) {
+      total += log.duration;
+    }
 
-    return total / recent.length;
+    return total / recentLogs.length;
   }
 
   static double averageQuality(List<SleepLog> logs) {
-    final recent = _last7(logs);
-    if (recent.isEmpty) return 0;
+    final recentLogs = _last7(logs);
+    if (recentLogs.isEmpty) return 0;
 
-    final total = recent.fold<int>(
-      0,
-      (sum, log) => sum + log.qualityScore,
-    );
+    int totalScore = 0;
+    for (final log in recentLogs) {
+      totalScore += log.qualityScore;
+    }
 
-    return total / recent.length;
+    return totalScore / recentLogs.length;
   }
 
   static List<SleepLog> _last7(List<SleepLog> logs) {
-    final sorted = [...logs]
-      ..sort((a, b) => b.date.compareTo(a.date));
-
-    return sorted.take(windowDays).toList();
+    final sortedLogs = List<SleepLog>.from(logs);
+    sortedLogs.sort((a, b) => b.date.compareTo(a.date));
+    return sortedLogs.take(windowDays).toList();
   }
 
   HealthLevel durationLevel(double avgHours) {
@@ -48,20 +47,17 @@ class SleepHealthCalculator {
     return HealthLevel.poor;
   }
 
-  int sleepHealthIndex({required double avgDurationHours,required double avgQuality,}) 
-  {
+  int sleepHealthIndex({
+    required double avgDurationHours,
+    required double avgQuality,
+  }) {
     final duration = durationLevel(avgDurationHours);
     final quality = qualityLevel(avgQuality);
 
     int score(HealthLevel level) {
-      switch (level) {
-        case HealthLevel.poor:
-          return 0;
-        case HealthLevel.okay:
-          return 1;
-        case HealthLevel.good:
-          return 2;
-      }
+      if (level == HealthLevel.poor) return 0;
+      if (level == HealthLevel.okay) return 1;
+      return 2; 
     }
 
     return score(duration) + score(quality) + 1; 

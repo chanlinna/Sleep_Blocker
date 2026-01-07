@@ -3,15 +3,13 @@ import '../models/habit_log.dart';
 import '../models/factor.dart';
 import '../models/factor_type.dart';
 
-
 class BlockerResult {
   final Factor factor;
   final double impact;
-  // For binary
+
   final double yesAvg;
   final double noAvg;
 
-  // For ordinal
   final double lowAvg;
   final double mediumAvg;
   final double highAvg;
@@ -43,7 +41,6 @@ class BlockerAnalysisResult {
   });
 }
 
-
 class SleepBlockerAnalyzer {
   static const int analysisDays = 7;
   static const double impactThreshold = -0.5;
@@ -57,16 +54,15 @@ class SleepBlockerAnalyzer {
       return const BlockerAnalysisResult(status: BlockerStatus.notEnoughData);
     }
 
-    final last7SleepLogs = sleepLogs
-        .sortedByDateDesc()
-        .take(analysisDays)
-        .toList();
+    final sortedLogs = List<SleepLog>.from(sleepLogs);
+    sortedLogs.sort((a, b) => b.date.compareTo(a.date));
+    final last7SleepLogs = sortedLogs.take(analysisDays).toList();
 
     final results = <BlockerResult>[];
 
     for (final factor in factors) {
       if (factor.type == FactorType.screen || factor.type == FactorType.pain) {
-        final impactData = _booleanImpactData(factor.factorId, last7SleepLogs, habitLogs);
+        final impactData = _calculateBooleanImpact(factor.factorId, last7SleepLogs, habitLogs);
         if (impactData != null && impactData.impact <= impactThreshold) {
           results.add(BlockerResult(
             factor: factor,
@@ -79,7 +75,7 @@ class SleepBlockerAnalyzer {
           ));
         }
       } else {
-        final impactData = _weightedImpactData(factor.factorId, last7SleepLogs, habitLogs);
+        final impactData = _calculateWeightedImpact(factor.factorId, last7SleepLogs, habitLogs);
         if (impactData != null && impactData.impact <= impactThreshold) {
           results.add(BlockerResult(
             factor: factor,
@@ -102,79 +98,88 @@ class SleepBlockerAnalyzer {
     return BlockerAnalysisResult(status: BlockerStatus.success, blockers: results);
   }
 
-  // ---------- BOOLEAN FACTORS ----------
-  static _BooleanImpactData? _booleanImpactData(
-    String factorId,
-    List<SleepLog> sleepLogs,
-    List<HabitLog> habitLogs,
-  ) {
-    final yes = <int>[];
-    final no = <int>[];
+  static _BooleanImpactData? _calculateBooleanImpact(
+      String factorId, List<SleepLog> sleepLogs, List<HabitLog> habitLogs) {
+    final yesScores = <int>[];
+    final noScores = <int>[];
 
     for (final sleep in sleepLogs) {
       final habit = habitLogs.firstWhere(
         (h) => h.sleepLogId == sleep.id && h.factorId == factorId,
         orElse: () => HabitLog(sleepLogId: sleep.id, factorId: factorId, value: -1),
       );
-      if (habit.value == 1) yes.add(sleep.qualityScore);
-      if (habit.value == 0) no.add(sleep.qualityScore);
+      if (habit.value == 1) {
+        yesScores.add(sleep.qualityScore);
+      } else if (habit.value == 0) {
+        noScores.add(sleep.qualityScore);
+      }
     }
 
-    if (yes.length < 2 || no.length < 2) return null;
+    if (yesScores.length < 2 || noScores.length < 2) {
+      return null;
+    }
 
-    final yesAvg = yes.average();
-    final noAvg = no.average();
+    final yesAvg = _average(yesScores);
+    final noAvg = _average(noScores);
     final impact = yesAvg - noAvg;
 
     return _BooleanImpactData(impact: impact, yesAvg: yesAvg, noAvg: noAvg);
   }
 
-  // ---------- WEIGHTED FACTORS ----------
-  static _WeightedImpactData? _weightedImpactData(
-    String factorId,
-    List<SleepLog> sleepLogs,
-    List<HabitLog> habitLogs,
-  ) {
-    final lowList = <int>[];
-    final mediumList = <int>[];
-    final highList = <int>[];
+  static _WeightedImpactData? _calculateWeightedImpact(
+    String factorId, List<SleepLog> sleepLogs, List<HabitLog> habitLogs) {
+      final lowScores = <int>[];
+      final mediumScores = <int>[];
+      final highScores = <int>[];
 
-    for (final sleep in sleepLogs) {
-      final habit = habitLogs.firstWhere((h) => h.sleepLogId == sleep.id && h.factorId == factorId);
-      if (habit.value == 1) lowList.add(sleep.qualityScore);
-      if (habit.value == 2) mediumList.add(sleep.qualityScore);
-      if (habit.value == 3) highList.add(sleep.qualityScore);
-    }
+      for (final sleep in sleepLogs) {
+        final habit = habitLogs.firstWhere((h) => h.sleepLogId == sleep.id && h.factorId == factorId);
+        if (habit.value == 0) {
+          lowScores.add(sleep.qualityScore);
+        } else if (habit.value == 1) {
+          mediumScores.add(sleep.qualityScore);
+        } else if (habit.value == 2) {
+          highScores.add(sleep.qualityScore);
+        }
+      }
 
-    if (lowList.length < 2) return null;
-    if ((mediumList.length + highList.length) < 2) return null;
+      if (lowScores.length < 2 || (mediumScores.length + highScores.length) < 2) {
+        return null;
+      }
 
-    final baseline = lowList.average();
+      final baseline = _average(lowScores);
+      double sumImpact = 0;
 
-    double sum = 0;
-    for (final sleep in sleepLogs) {
-      final habit = habitLogs.firstWhere((h) => h.sleepLogId == sleep.id && h.factorId == factorId);
-      final weight = switch (habit.value) {
-        1 => 0.0,
-        2 => 0.5,
-        3 => 1.0,
-        _ => 0.0,
-      };
-      sum += weight * (sleep.qualityScore - baseline);
-    }
+      for (final sleep in sleepLogs) {
+        final habit = habitLogs.firstWhere((h) => h.sleepLogId == sleep.id && h.factorId == factorId);
+        double weight = 0.0;
+        if (habit.value == 0) weight = 0.0;
+        if (habit.value == 1) weight = 0.5;
+        if (habit.value == 2) weight = 1.0;
 
-    final impact = sum / sleepLogs.length;
+        sumImpact += weight * (sleep.qualityScore - baseline);
+      }
 
-    return _WeightedImpactData(
-      impact: impact,
-      lowAvg: lowList.average(),
-      mediumAvg: mediumList.isEmpty ? lowList.average() : mediumList.average(),
-      highAvg: highList.isEmpty ? lowList.average() : highList.average(),
-    );
+      final impact = sumImpact / sleepLogs.length;
+
+      final lowAvg = _average(lowScores);
+      final mediumAvg = mediumScores.isEmpty ? lowAvg : _average(mediumScores);
+      final highAvg = highScores.isEmpty ? lowAvg : _average(highScores);
+
+      return _WeightedImpactData(
+        impact: impact,
+        lowAvg: lowAvg,
+        mediumAvg: mediumAvg,
+        highAvg: highAvg,
+      );
+  }
+
+  static double _average(List<int> numbers) {
+    final total = numbers.fold<int>(0, (sum, item) => sum + item);
+    return total / numbers.length;
   }
 }
 
-// ---------- DATA CLASSES FOR INTERNAL USE ----------
 class _BooleanImpactData {
   final double impact;
   final double yesAvg;
@@ -189,19 +194,10 @@ class _WeightedImpactData {
   final double mediumAvg;
   final double highAvg;
 
-  _WeightedImpactData({required this.impact, required this.lowAvg, required this.mediumAvg, required this.highAvg});
+  _WeightedImpactData({
+    required this.impact,
+    required this.lowAvg,
+    required this.mediumAvg,
+    required this.highAvg,
+  });
 }
-
-// ---------- HELPERS ----------
-extension Average on List<int> {
-  double average() => reduce((a, b) => a + b) / length;
-}
-
-extension SortSleepLogs on List<SleepLog> {
-  List<SleepLog> sortedByDateDesc() {
-    final copy = [...this];
-    copy.sort((a, b) => b.date.compareTo(a.date));
-    return copy;
-  }
-}
-

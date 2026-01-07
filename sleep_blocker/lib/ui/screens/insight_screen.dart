@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_blocker/data/mock_factor.dart';
-import 'package:sleep_blocker/data/mock_habit_log.dart';
-import 'package:sleep_blocker/data/mock_sleep_log.dart';
+import 'package:sleep_blocker/logic/log_service.dart';
 import 'package:sleep_blocker/logic/sleep_blocker_analyzer.dart';
 import 'package:sleep_blocker/ui/helpers/blocker_text.dart';
 import 'package:sleep_blocker/ui/theme/app_theme.dart';
@@ -29,9 +28,12 @@ class _InsightScreenState extends State<InsightScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sleepLogs = LogService.sleepHistory;
+    final habitLogs = LogService.habitHistory;
+
     final result = SleepBlockerAnalyzer.analyze(
-      sleepLogs: mockSleepLogs,
-      habitLogs: mockHabitLogs,
+      sleepLogs: sleepLogs,
+      habitLogs: habitLogs,
       factors: mockFactors
     );
 
@@ -84,12 +86,23 @@ class _InsightScreenState extends State<InsightScreen> {
             const SizedBox(height: 20),
             SectionTitle(title: 'Sleep History'),
             Expanded(
-                child: ListView.builder(
-                  itemCount: mockSleepLogs.length,
+                child: sleepLogs.isEmpty?
+                Center(
+                  child: Text(
+                    "No sleep history yet.",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+                :ListView.builder(
+                  itemCount: sleepLogs.length,
                   itemBuilder: (context, index) {
-                    final sleepLog = mockSleepLogs[mockSleepLogs.length - 1 - index];
+                    final sleepLog = sleepLogs[sleepLogs.length - 1 - index];
                 
-                    final habitLogsForNight = mockHabitLogs
+                    final habitLogsForNight = habitLogs
                         .where((h) => h.sleepLogId == sleepLog.id)
                         .toList();
                 

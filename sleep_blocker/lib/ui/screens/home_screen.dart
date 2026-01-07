@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_blocker/data/mock_factor.dart';
-import 'package:sleep_blocker/data/mock_habit_log.dart';
-import 'package:sleep_blocker/data/mock_sleep_log.dart';
 import 'package:sleep_blocker/logic/calculate_sleep_health.dart';
+import 'package:sleep_blocker/logic/log_service.dart';
 import 'package:sleep_blocker/logic/sleep_blocker_analyzer.dart';
 import 'package:sleep_blocker/ui/helpers/blocker_text.dart';
 import 'package:sleep_blocker/ui/theme/app_theme.dart';
@@ -18,16 +17,19 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sleepLogs = LogService.sleepHistory;
+    final habitLogs = LogService.habitHistory; 
+
     final result = SleepBlockerAnalyzer.analyze(
-      sleepLogs: mockSleepLogs,
-      habitLogs: mockHabitLogs,
+      sleepLogs: sleepLogs,
+      habitLogs: habitLogs,
       factors: mockFactors
     );
 
-    final avgDurationHours = SleepHealthCalculator.averageDurationHours(mockSleepLogs);
-    final avgQuality = SleepHealthCalculator.averageQuality(mockSleepLogs);
+    final avgDurationHours = SleepHealthCalculator.averageDurationHours(sleepLogs);
+    final avgQuality = SleepHealthCalculator.averageQuality(sleepLogs);
 
-    final lastSleep = mockSleepLogs.isNotEmpty ? mockSleepLogs.last : null;
+    final lastSleep = sleepLogs.isNotEmpty ? sleepLogs.last : null;
 
     return Scaffold(
       body: Container(

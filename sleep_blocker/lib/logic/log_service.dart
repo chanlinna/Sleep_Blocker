@@ -7,7 +7,7 @@ class LogService {
   static List<SleepLog> sleepHistory = [];
   static List<HabitLog> habitHistory = [];
 
-  // Keys to identify our data in the browser's storage
+  // keys to identify our data in the browser's storage
   static const String _sleepKey = 'sleep_logs_data';
   static const String _habitKey = 'habit_logs_data';
 
