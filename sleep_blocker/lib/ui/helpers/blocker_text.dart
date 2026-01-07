@@ -38,13 +38,13 @@ String adviceText(BlockerAnalysisResult result) {
 
   switch (blocker.factor.type) {
     case FactorType.screen:
-      return "Try putting your phone away 30 minutes before bed.";
+      return "Try putting your phone away 30 minutes before bed or switch to night mode.";
     case FactorType.pain:
-      return "Consider light stretching or pain relief before sleep.";
+      return "Gentle stretching, a warm shower, or pain relief may help you sleep more comfortably.";
     case FactorType.noise:
-      return "Reduce noise or try earplugs before bed.";
+      return "Lower background noise, close windows, or try earplugs or white noise.";
     case FactorType.stress:
-      return "Try breathing or relaxation exercises before sleep.";
+      return "Slow breathing, meditation, or writing down worries can help calm your mind.";
   }
 }
 
