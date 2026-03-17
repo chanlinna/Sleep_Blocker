@@ -78,8 +78,18 @@ No internet connection is required.
 ## Team
 
 Developed as a 2-member academic project:
-- CHUM Chanlinna - Analyze logic handling & UX/UI Design
-- IN Chanaliza - Data handling & UX/UI Design
+
+IN Chanaliza – Full-Stack & Data Integration DeveloperUser 
+- Flow & UX Design: Architected the user journey and navigation flow to ensure an intuitive experience from input to results.
+- System Architecture: Designed the core Data Models and managed the overall system Data Flow.
+- Data Persistence: Implemented local storage and user state management (Shared Preferences) for system reliability.
+- Feature Implementation: Developed functional User Input Screens and integrated them with the backend logic.
+- Collaborative UI: Partnered on the visual interface design and final UI elements.
+  
+CHUM Chanlinna – Data Analyst & Logic Developer
+- Algorithmic Logic: Developed the core Analysis Logic and data processing algorithms.
+- Insight Screen Development: Designed and built the "Insight Screen" to visualize data analysis results for the user.
+- Collaborative UI/UX: Partnered on the visual design and provided iterative feedback on the user flow and interface.
 
 ## Limitations
 
